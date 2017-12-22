@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html ng-app="app" lang="pt-BR">
+<head>
+    <title>Agenda telefônica</title>
+    <meta charset="utf-8"/>
+
+    <script src="lib/angular.min.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/controllers/mainCtrl.js"></script>
+    <script src="js/config/valuesConfig.js"></script>
+    <script src="js/services/ContatoService.js"></script>
+    <script src="js/services/OperadoraService.js"></script>
+
+    <link rel="stylesheet" href="lib/bootstrap.min.css"/>
+    <link rel="stylesheet" href="css/style.css"/>
+</head>
+<body ng-controller="mainCtrl">
+
+<div class="jumbotron">
+    <h3>Lista Telefônica</h3>
+    <table class="table table-striped" ng-show="contatos.length > 0">
+        <tr>
+            <th/>
+            <th>Nome</th>
+            <th>Telefone</th>
+            <th>Operadora</th>
+        </tr>
+        <tr ng-class="{selecionado : contato.selecionado}" ng-repeat="contato in contatos">
+            <td><input type="checkbox" class="checkbox" ng-model="contato.selecionado"/></td>
+            <td>{{contato.nome}}</td>
+            <td>{{contato.telefone}}</td>
+            <td>{{operadoras[contato.operadora_id - 1].nome}}</td>
+        </tr>
+    </table>
+    <hr/>
+    <input class="form-control" type="text" ng-model="contato.nome" placeholder="Nome"/>
+    <input class="form-control" type="text" ng-model="contato.telefone" placeholder="Telefone"/>
+    <select class="form-control" ng-model="contato.operadora_id"
+            ng-options="operadora.id as operadora.nome group by operadora.categoria for operadora in operadoras">
+        <option value="">Selectione sua operadora</option>
+    </select>
+
+    <button class="btn btn-primary btn-block" ng-click="addContato(contato)"
+            ng-disabled="!contato.nome || !contato.telefone || !contato.operadora_id">Adicionar contato
+    </button>
+    <button class="btn btn-danger btn-block" ng-click="apagarContatos(contatos)"
+            ng-show="isContatoSelecionado(contatos)">Apagar contatos
+    </button>
+</div>
+</body>
+</html>
